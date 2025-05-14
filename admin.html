@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Administração</title>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
+</head>
+<body>
+    <h1>Painel de Administração</h1>
+    <form id="episodeForm">
+        <label for="title">Título:</label>
+        <input type="text" id="title" required><br><br>
+
+        <label for="date">Data:</label>
+        <input type="text" id="date" required><br><br>
+
+        <label for="description">Descrição:</label>
+        <textarea id="description" required></textarea><br><br>
+
+        <label for="image">URL da Imagem:</label>
+        <input type="text" id="image"><br><br>
+
+        <label for="link">Link do Episódio:</label>
+        <input type="text" id="link" required><br><br>
+
+        <button type="submit">Adicionar Episódio</button>
+    </form>
+
+    <script>
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "SUA_API_KEY",
+            authDomain: "SEU_AUTH_DOMAIN",
+            projectId: "SEU_PROJECT_ID",
+            storageBucket: "SEU_STORAGE_BUCKET",
+            messagingSenderId: "SEU_MESSAGING_SENDER_ID",
+            appId: "SEU_APP_ID",
+            databaseURL: "SEU_DATABASE_URL"
+        };
+
+        // Inicializar Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+
+        // Referência ao formulário
+        const form = document.getElementById('episodeForm');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Capturar os dados do formulário
+            const title = document.getElementById('title').value;
+            const date = document.getElementById('date').value;
+            const description = document.getElementById('description').value;
+            const image = document.getElementById('image').value;
+            const link = document.getElementById('link').value;
+
+            // Enviar os dados para o Firebase
+            const newEpisodeRef = db.ref('episodes').push();
+            newEpisodeRef.set({
+                title,
+                date,
+                description,
+                image,
+                link
+            }).then(() => {
+                alert('Episódio adicionado com sucesso!');
+                form.reset();
+            }).catch((err) => {
+                console.error('Erro ao adicionar episódio:', err);
+            });
+        });
+    </script>
+</body>
+</html>
