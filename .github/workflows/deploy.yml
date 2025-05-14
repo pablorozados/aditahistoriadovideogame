@@ -48,7 +48,15 @@ jobs:
           git commit -m "Initialize gh-pages branch"
           git push origin gh-pages --force
 
-      # Passo 5: Deploy para o GitHub Pages
+      # Passo 5: Habilitar o GitHub Pages (se necessário)
+      - name: Enable GitHub Pages
+        uses: peter-evans/create-or-update-file@v2
+        with:
+          path: .nojekyll
+          message: "Enable GitHub Pages"
+          content: ""
+
+      # Passo 6: Deploy para o GitHub Pages
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v1
         with:
