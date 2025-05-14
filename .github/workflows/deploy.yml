@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
-      contents: read
+      contents: write
 
     steps:
       # Passo 1: Fazer o checkout do código
@@ -29,9 +29,9 @@ jobs:
           sed -i "s|{{FIREBASE_PROJECT_ID}}|${{ secrets.FIREBASE_PROJECT_ID }}|g" admin.html
           sed -i "s|{{FIREBASE_STORAGE_BUCKET}}|${{ secrets.FIREBASE_STORAGE_BUCKET }}|g" admin.html
 
-      # Passo 3: Deploy para o GitHub Pages
+      # Passo 3: Deploy para a branch gh-pages
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v1
         with:
-          branch: gh-pages # Deploy será feito na branch 'gh-pages'
+          branch: gh-pages # Deploy será feito na branch gh-pages
           folder: . # Deploy do conteúdo do repositório
