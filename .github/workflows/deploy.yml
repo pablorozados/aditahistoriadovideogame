@@ -17,7 +17,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Passo 2: Substituir os placeholders pelos valores dos secrets
+      # Passo 2: Configurar o Git (nome e email)
+      - name: Configure Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+      # Passo 3: Substituir os placeholders pelos valores dos secrets
       - name: Replace Firebase Secrets in admin.html
         run: |
           sed -i "s|{{FIREBASE_API_KEY}}|${{ secrets.FIREBASE_API_KEY }}|g" admin.html
@@ -29,7 +35,7 @@ jobs:
           sed -i "s|{{FIREBASE_PROJECT_ID}}|${{ secrets.FIREBASE_PROJECT_ID }}|g" admin.html
           sed -i "s|{{FIREBASE_STORAGE_BUCKET}}|${{ secrets.FIREBASE_STORAGE_BUCKET }}|g" admin.html
 
-      # Passo 3: Configurar o Git para criar a branch gh-pages (se não existir)
+      # Passo 4: Configurar o Git para criar a branch gh-pages (se não existir)
       - name: Force Create gh-pages Branch
         run: |
           git fetch origin || echo "No branches fetched yet"
@@ -42,7 +48,7 @@ jobs:
           git commit -m "Initialize gh-pages branch"
           git push origin gh-pages --force
 
-      # Passo 4: Deploy para o GitHub Pages
+      # Passo 5: Deploy para o GitHub Pages
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v1
         with:
