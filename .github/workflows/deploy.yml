@@ -44,17 +44,17 @@ jobs:
           git reset --hard
           git clean -fdx
           echo "GitHub Pages initialized" > index.html
-          git add .
+          git add index.html
           git commit -m "Initialize gh-pages branch"
           git push origin gh-pages --force
 
-      # Passo 5: Habilitar o GitHub Pages (se necessário)
+      # Passo 5: Criar o arquivo .nojekyll manualmente
       - name: Enable GitHub Pages
-        uses: peter-evans/create-or-update-file@v2
-        with:
-          path: .nojekyll
-          message: "Enable GitHub Pages"
-          content: ""
+        run: |
+          echo "" > .nojekyll
+          git add .nojekyll
+          git commit -m "Enable GitHub Pages"
+          git push origin gh-pages
 
       # Passo 6: Deploy para o GitHub Pages
       - name: Deploy to GitHub Pages
