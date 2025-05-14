@@ -14,18 +14,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Passo 2: Configurar Node.js (se necessário)
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-
-      # Passo 3: Instalar dependências (caso você use ferramentas como npm/yarn)
-      - name: Install dependencies
-        run: npm install || true # Ignora erros se não houver dependências
-
-      # Passo 4: Substituir os placeholders pelos valores dos secrets
-      - name: Replace Firebase Secrets
+      # Passo 2: Substituir os placeholders pelos valores dos secrets
+      - name: Replace Firebase Secrets in admin.html
         run: |
           sed -i "s|{{FIREBASE_API_KEY}}|${{ secrets.FIREBASE_API_KEY }}|g" admin.html
           sed -i "s|{{FIREBASE_APP_ID}}|${{ secrets.FIREBASE_APP_ID }}|g" admin.html
@@ -36,7 +26,7 @@ jobs:
           sed -i "s|{{FIREBASE_PROJECT_ID}}|${{ secrets.FIREBASE_PROJECT_ID }}|g" admin.html
           sed -i "s|{{FIREBASE_STORAGE_BUCKET}}|${{ secrets.FIREBASE_STORAGE_BUCKET }}|g" admin.html
 
-      # Passo 5: Deploy para o GitHub Pages
+      # Passo 3: Deploy para o GitHub Pages
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v1
         with:
