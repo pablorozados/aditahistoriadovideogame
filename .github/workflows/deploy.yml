@@ -30,16 +30,17 @@ jobs:
           sed -i "s|{{FIREBASE_STORAGE_BUCKET}}|${{ secrets.FIREBASE_STORAGE_BUCKET }}|g" admin.html
 
       # Passo 3: Configurar o Git para criar a branch gh-pages (se não existir)
-      - name: Create gh-pages Branch if Not Exists
+      - name: Force Create gh-pages Branch
         run: |
-          git fetch origin gh-pages || echo "gh-pages branch does not exist yet"
-          git switch gh-pages || git switch --orphan gh-pages
+          git fetch origin || echo "No branches fetched yet"
+          git branch -D gh-pages || echo "No gh-pages branch to delete"
+          git checkout --orphan gh-pages
           git reset --hard
           git clean -fdx
-          echo "Placeholder for GitHub Pages" > index.html
+          echo "GitHub Pages initialized" > index.html
           git add .
-          git commit -m "Initialize gh-pages branch" || echo "No changes to commit"
-          git push origin gh-pages
+          git commit -m "Initialize gh-pages branch"
+          git push origin gh-pages --force
 
       # Passo 4: Deploy para o GitHub Pages
       - name: Deploy to GitHub Pages
