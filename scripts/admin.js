@@ -1,13 +1,5 @@
 const fs = require('fs');
 
-// Firebase App (core)
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-// Firebase Auth
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-// Firebase Database
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-
-// Substitua os valores abaixo pelos seus secrets do Firebase
 const firebaseConfig = {
   apiKey: "FIREBASE_API_KEY",
   authDomain: "FIREBASE_AUTH_DOMAIN",
@@ -19,7 +11,6 @@ const firebaseConfig = {
   measurementId: "FIREBASE_MEASUREMENT_ID"
 };
 
-// Inicializa o Firebase
 firebase.initializeApp(firebaseConfig);
 
 document.addEventListener('DOMContentLoaded', () => {
