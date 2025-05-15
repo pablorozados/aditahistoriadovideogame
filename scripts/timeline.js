@@ -1,6 +1,6 @@
 const timelineContainer = document.getElementById('timeline');
 
-fetch('../episodes.json')
+fetch('episodes.json')
   .then(response => response.json())
   .then(episodes => {
     const timeline = document.getElementById('timeline');
