@@ -11,6 +11,7 @@ jobs:
     permissions:
       pages: write    # Permissão necessária para publicar no GitHub Pages
       id-token: write # Permissão necessária para autenticação
+      contents: read  # Permissão necessária para acessar o conteúdo do repositório
 
     steps:
       # Passo 1: Checkout do código
@@ -26,3 +27,5 @@ jobs:
       # Passo 3: Deploy para o GitHub Pages
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v1
+        with:
+          branch: gh-pages # Especifica a branch para o deploy
