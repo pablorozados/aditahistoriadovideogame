@@ -9,34 +9,20 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Permissão para gerenciar o conteúdo do repositório
-      pages: write    # Permissão para publicar no GitHub Pages
-      id-token: write # Necessário para autenticação
+      pages: write    # Permissão necessária para publicar no GitHub Pages
+      id-token: write # Permissão necessária para autenticação
 
     steps:
-      # Passo 1: Checkout do repositório
-      - name: Checkout Code
+      # Passo 1: Checkout do código
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      # Passo 2: Configurar o Git (para commits na branch gh-pages)
+      # Passo 2: Configurar o Git
       - name: Configure Git
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
 
-      # Passo 3: Instalar dependências (se necessário, caso tenha build)
-      # Só descomente se você precisar fazer build de arquivos
-      # - name: Install Dependencies
-      #   run: npm install
-
-      # Passo 4: Criar arquivos estáticos (se necessário, caso tenha build)
-      # Só descomente se você precisar de um comando build
-      # - name: Build Site
-      #   run: npm run build
-
-      # Passo 5: Deploy para GitHub Pages
+      # Passo 3: Deploy para o GitHub Pages
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v1
-        with:
-          branch: gh-pages # Branch alvo para o GitHub Pages
-          folder: .         # Pasta que será publicada (raiz do repositório)
