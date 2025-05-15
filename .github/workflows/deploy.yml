@@ -3,50 +3,40 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main # Executa o workflow quando há alterações na branch 'main'
+      - main # Executa o workflow ao fazer push na branch 'main'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      id-token: write
+      contents: write # Permissão para gerenciar o conteúdo do repositório
+      pages: write    # Permissão para publicar no GitHub Pages
+      id-token: write # Necessário para autenticação
 
     steps:
-      # Passo 1: Fazer o checkout do repositório
-      - name: Checkout code
+      # Passo 1: Checkout do repositório
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Passo 2: Configurar o Git
+      # Passo 2: Configurar o Git (para commits na branch gh-pages)
       - name: Configure Git
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
 
-      # Passo 3: Garantir a existência da branch gh-pages
-      - name: Create gh-pages Branch if Necessary
-        run: |
-          git fetch origin || echo "Nenhuma branch encontrada ainda"
-          git branch -D gh-pages || echo "A branch gh-pages não existe"
-          git checkout --orphan gh-pages
-          git reset --hard
-          git clean -fdx
-          echo "GitHub Pages inicializado" > index.html
-          git add index.html
-          git commit -m "Inicializar a branch gh-pages"
-          git push origin gh-pages --force
+      # Passo 3: Instalar dependências (se necessário, caso tenha build)
+      # Só descomente se você precisar fazer build de arquivos
+      # - name: Install Dependencies
+      #   run: npm install
 
-      # Passo 4: Criar o arquivo .nojekyll
-      - name: Enable GitHub Pages
-        run: |
-          echo "" > .nojekyll
-          git add .nojekyll
-          git commit -m "Habilitar o GitHub Pages"
-          git push origin gh-pages
+      # Passo 4: Criar arquivos estáticos (se necessário, caso tenha build)
+      # Só descomente se você precisar de um comando build
+      # - name: Build Site
+      #   run: npm run build
 
-      # Passo 5: Publicar no GitHub Pages
+      # Passo 5: Deploy para GitHub Pages
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v1
         with:
-          branch: gh-pages
-          folder: .
+          branch: gh-pages # Branch alvo para o GitHub Pages
+          folder: .         # Pasta que será publicada (raiz do repositório)
