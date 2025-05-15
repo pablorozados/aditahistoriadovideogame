@@ -8,6 +8,7 @@ fetch('episodes.json')
       const div = document.createElement('div');
       div.className = 'episode';
       div.innerHTML = `
+        <div class="years">${ep.startYear} - ${ep.endYear}</div>
         <img src="${ep.image}" alt="${ep.title}">
         <h2>${ep.title}</h2>
         <p>${ep.description}</p>

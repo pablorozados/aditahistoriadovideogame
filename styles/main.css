@@ -160,3 +160,10 @@ form input[type="submit"] {
 form input[type="submit"]:hover {
     background: #555;
 }
+
+.years {
+    font-weight: bold;
+    color: #1976d2;
+    font-size: 1.1em;
+    margin-bottom: 8px;
+}
