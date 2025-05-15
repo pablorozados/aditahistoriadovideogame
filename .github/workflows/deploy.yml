@@ -1,6 +1,6 @@
 name: Deploy to GitHub Pages
 
-on: 
+on:
   push:
     branches:
       - main # Executa o workflow quando há alterações na branch 'main'
@@ -9,56 +9,44 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
       contents: write
+      id-token: write
 
     steps:
-      # Passo 1: Fazer o checkout do código
+      # Passo 1: Fazer o checkout do repositório
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Passo 2: Configurar o Git (nome e email)
+      # Passo 2: Configurar o Git
       - name: Configure Git
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
 
-      # Passo 3: Substituir os placeholders pelos valores dos secrets
-      - name: Replace Firebase Secrets in admin.html
+      # Passo 3: Garantir a existência da branch gh-pages
+      - name: Create gh-pages Branch if Necessary
         run: |
-          sed -i "s|{{FIREBASE_API_KEY}}|${{ secrets.FIREBASE_API_KEY }}|g" admin.html
-          sed -i "s|{{FIREBASE_APP_ID}}|${{ secrets.FIREBASE_APP_ID }}|g" admin.html
-          sed -i "s|{{FIREBASE_AUTH_DOMAIN}}|${{ secrets.FIREBASE_AUTH_DOMAIN }}|g" admin.html
-          sed -i "s|{{FIREBASE_DATABASE_URL}}|${{ secrets.FIREBASE_DATABASE_URL }}|g" admin.html
-          sed -i "s|{{FIREBASE_MEASUREMENT_ID}}|${{ secrets.FIREBASE_MEASUREMENT_ID }}|g" admin.html
-          sed -i "s|{{FIREBASE_MESSAGING_SENDER_ID}}|${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}|g" admin.html
-          sed -i "s|{{FIREBASE_PROJECT_ID}}|${{ secrets.FIREBASE_PROJECT_ID }}|g" admin.html
-          sed -i "s|{{FIREBASE_STORAGE_BUCKET}}|${{ secrets.FIREBASE_STORAGE_BUCKET }}|g" admin.html
-
-      # Passo 4: Configurar o Git para criar a branch gh-pages (se não existir)
-      - name: Force Create gh-pages Branch
-        run: |
-          git fetch origin || echo "No branches fetched yet"
-          git branch -D gh-pages || echo "No gh-pages branch to delete"
+          git fetch origin || echo "Nenhuma branch encontrada ainda"
+          git branch -D gh-pages || echo "A branch gh-pages não existe"
           git checkout --orphan gh-pages
           git reset --hard
           git clean -fdx
-          echo "GitHub Pages initialized" > index.html
+          echo "GitHub Pages inicializado" > index.html
           git add index.html
-          git commit -m "Initialize gh-pages branch"
+          git commit -m "Inicializar a branch gh-pages"
           git push origin gh-pages --force
 
-      # Passo 5: Criar o arquivo .nojekyll manualmente
+      # Passo 4: Criar o arquivo .nojekyll
       - name: Enable GitHub Pages
         run: |
           echo "" > .nojekyll
           git add .nojekyll
-          git commit -m "Enable GitHub Pages"
+          git commit -m "Habilitar o GitHub Pages"
           git push origin gh-pages
 
-      # Passo 6: Deploy para o GitHub Pages
+      # Passo 5: Publicar no GitHub Pages
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v1
         with:
-          branch: gh-pages # Deploy será feito na branch gh-pages
-          folder: . # Deploy do conteúdo do repositório
+          branch: gh-pages
+          folder: .
