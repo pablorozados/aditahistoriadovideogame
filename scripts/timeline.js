@@ -11,7 +11,12 @@ fetch('episodes.json')
         <img src="${ep.image}" alt="${ep.title}">
         <h2>${ep.title}</h2>
         <p>${ep.description}</p>
-        <a href="${ep.spotify}" target="_blank">Ouça no Spotify</a>
+        <div class="links">
+          ${ep.spotify ? `<a href="${ep.spotify}" target="_blank">Spotify</a>` : ''}
+          ${ep.apple ? `<a href="${ep.apple}" target="_blank">Apple Podcasts</a>` : ''}
+          ${ep.deezer ? `<a href="${ep.deezer}" target="_blank">Deezer</a>` : ''}
+          ${ep.amazon ? `<a href="${ep.amazon}" target="_blank">Amazon Music</a>` : ''}
+        </div>
         <div style="clear:both"></div>
       `;
       timeline.appendChild(div);
