@@ -1,0 +1,32 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write    # Permissão necessária para publicar no GitHub Pages
+      id-token: write # Permissão necessária para autenticação
+      contents: read  # Permissão necessária para acessar o conteúdo do repositório
+
+    steps:
+      # Passo 1: Checkout do código
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Passo 2: Configurar o Git
+      - name: Configure Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+      # Passo 3: Deploy para o GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v1
+        with:
+          branch: gh-pages # Especifica a branch para o deploy
