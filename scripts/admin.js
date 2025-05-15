@@ -1,64 +1,53 @@
 const fs = require('fs');
 
+// Firebase App (core)
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+// Firebase Auth
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+// Firebase Database
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+// Substitua os valores abaixo pelos seus secrets do Firebase
+const firebaseConfig = {
+  apiKey: "FIREBASE_API_KEY",
+  authDomain: "FIREBASE_AUTH_DOMAIN",
+  databaseURL: "FIREBASE_DATABASE_URL",
+  projectId: "FIREBASE_PROJECT_ID",
+  storageBucket: "FIREBASE_STORAGE_BUCKET",
+  messagingSenderId: "FIREBASE_MESSAGING_SENDER_ID",
+  appId: "FIREBASE_APP_ID",
+  measurementId: "FIREBASE_MEASUREMENT_ID"
+};
+
+// Inicializa o Firebase
+firebase.initializeApp(firebaseConfig);
+
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('episode-form');
-    const episodeArtInput = document.getElementById('episode-art');
-    const descriptionInput = document.getElementById('description');
-    const listenLinkInput = document.getElementById('listen-link');
-    const episodesFilePath = '../episodes.json';
+  const form = document.getElementById('episodeForm');
 
-    form.addEventListener('submit', (event) => {
-        event.preventDefault();
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
 
-        const episodeArt = episodeArtInput.files[0];
-        const description = descriptionInput.value;
-        const listenLink = listenLinkInput.value;
+    const episode = {
+      title: document.getElementById('title').value,
+      description: tinymce.get('description').getContent(),
+      image: document.getElementById('image').value,
+      spotify: document.getElementById('spotify').value,
+      apple: document.getElementById('apple').value,
+      deezer: document.getElementById('deezer').value,
+      amazon: document.getElementById('amazon').value,
+      startYear: document.getElementById('startYear').value,
+      endYear: document.getElementById('endYear').value
+    };
 
-        const episode = {
-            title: document.getElementById('title').value,
-            description: tinymce.get('description').getContent(),
-            image: document.getElementById('image').value,
-            spotify: document.getElementById('spotify').value,
-            apple: document.getElementById('apple').value,
-            deezer: document.getElementById('deezer').value,
-            amazon: document.getElementById('amazon').value,
-            startYear: document.getElementById('startYear').value,
-            endYear: document.getElementById('endYear').value
-        };
-
-        if (episodeArt && description && listenLink) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const episodeData = {
-                    title: `Episode ${Date.now()}`,
-                    description: description,
-                    artwork: e.target.result,
-                    link: listenLink
-                };
-
-                fs.readFile(episodesFilePath, 'utf8', (err, data) => {
-                    if (err) {
-                        console.error('Error reading episodes file:', err);
-                        return;
-                    }
-
-                    const episodes = JSON.parse(data);
-                    episodes.push(episodeData);
-
-                    fs.writeFile(episodesFilePath, JSON.stringify(episodes, null, 2), (err) => {
-                        if (err) {
-                            console.error('Error writing episodes file:', err);
-                            return;
-                        }
-
-                        alert('Episode added successfully!');
-                        form.reset();
-                    });
-                });
-            };
-            reader.readAsDataURL(episodeArt);
-        } else {
-            alert('Please fill in all fields and upload artwork.');
-        }
-    });
+    firebase.database().ref('episodes').push(episode)
+      .then(() => {
+        alert('Episódio cadastrado com sucesso!');
+        form.reset();
+        tinymce.get('description').setContent('');
+      })
+      .catch((error) => {
+        alert('Erro ao cadastrar episódio: ' + error.message);
+      });
+  });
 });
