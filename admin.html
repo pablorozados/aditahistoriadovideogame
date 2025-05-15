@@ -2,28 +2,39 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Cadastro de Episódios</title>
+    <title>Admin - Cadastrar Episódio</title>
     <link rel="stylesheet" href="styles/main.css">
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <body>
-    <h1>Cadastro de Novos Episódios</h1>
-    <form id="episode-form">
-        <label for="episode-title">Título do Episódio:</label>
-        <input type="text" id="episode-title" name="episode-title" required>
-
-        <label for="episode-description">Descrição:</label>
-        <textarea id="episode-description" name="episode-description" required></textarea>
-
-        <label for="episode-art">Arte do Episódio:</label>
-        <input type="file" id="episode-art" name="episode-art" accept="image/*" required>
-
-        <label for="episode-link">Link para Escutar:</label>
-        <input type="url" id="episode-link" name="episode-link" required>
-
-        <button type="submit">Adicionar Episódio</button>
+    <h1>Cadastrar Novo Episódio</h1>
+    <form id="episodeForm">
+        <label>Título:<br>
+            <input type="text" id="title" required>
+        </label><br><br>
+        <label>Descrição:<br>
+            <textarea id="description"></textarea>
+        </label><br><br>
+        <label>Imagem (URL):<br>
+            <input type="text" id="image" required>
+        </label><br><br>
+        <label>Spotify:<br>
+            <input type="text" id="spotify">
+        </label><br><br>
+        <label>Apple Podcasts:<br>
+            <input type="text" id="apple">
+        </label><br><br>
+        <label>Deezer:<br>
+            <input type="text" id="deezer">
+        </label><br><br>
+        <label>Amazon Music:<br>
+            <input type="text" id="amazon">
+        </label><br><br>
+        <button type="submit">Salvar Episódio</button>
     </form>
-
+    <script>
+        tinymce.init({ selector: '#description', language: 'pt_BR' });
+    </script>
     <script src="scripts/admin.js"></script>
 </body>
 </html>
