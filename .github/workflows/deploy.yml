@@ -3,7 +3,8 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main # Executa o workflow ao fazer push na branch 'main'
+      - main
+  workflow_dispatch:
 
 jobs:
   deploy:
