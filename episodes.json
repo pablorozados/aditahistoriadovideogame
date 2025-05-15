@@ -1,0 +1,16 @@
+{
+  "episodes": [
+    {
+      "title": "A História do Atari",
+      "description": "Descubra como o Atari mudou o mundo dos games.",
+      "image": "assets/atari.jpg",
+      "spotify": "https://open.spotify.com/episode/xxxx"
+    },
+    {
+      "title": "Nintendo e o NES",
+      "description": "Como a Nintendo revolucionou os consoles.",
+      "image": "assets/nes.jpg",
+      "spotify": "https://open.spotify.com/episode/yyyy"
+    }
+  ]
+}
