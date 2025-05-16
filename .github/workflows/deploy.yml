@@ -9,6 +9,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
     permissions:
       pages: write    # Permissão necessária para publicar no GitHub Pages
       id-token: write # Permissão necessária para autenticação
